@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const port = 5000
+const axios = require('axios');
 
 const config = require('./config/key')
 
@@ -23,6 +24,21 @@ mongoose.connect(config.mongoURI,{
     .catch((err) => console.log(err))
 
 // -----------------------------------------------
+
+// -----Register--------
+
+axios.post('/api/users/register',(req,res) => {
+    const user = new USER(req.body)
+
+    user.save((err) => {
+        if(err) return res.status(400).json({success: false, err})
+
+        return res.status(200).json({
+            success: true
+        })       
+    })
+})
+
 
 
 app.get('/', (req, res) => {
